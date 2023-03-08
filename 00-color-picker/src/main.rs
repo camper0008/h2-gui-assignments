@@ -4,9 +4,6 @@ use eframe::egui;
 use egui::{ColorImage, TextureHandle, TextureOptions};
 
 fn main() -> Result<(), eframe::Error> {
-    // Log to stdout (if you run with `RUST_LOG=debug`).
-    tracing_subscriber::fmt::init();
-
     let options = eframe::NativeOptions {
         centered: true,
         ..Default::default()
@@ -30,7 +27,7 @@ impl Default for ColorPickerApp {
         let r = 200;
         let g = 50;
         let b = 90;
-        let hex = format!("{r:2x}{b:2x}{g:2x}");
+        let hex = format!("{r:2x}{g:2x}{b:2x}");
         Self { r, g, b, hex }
     }
 }
@@ -41,10 +38,14 @@ impl ColorPickerApp {
         self.hex.chars().all(|c| hex_chars.contains(&c)) && self.hex.len() == 6
     }
 
-    fn update_hex(&mut self) {
+    fn hex_to_rgb(&mut self) {
         self.r = u8::from_str_radix(&self.hex[0..2], 16).expect("already validated by valid_hex");
         self.g = u8::from_str_radix(&self.hex[2..4], 16).expect("already validated by valid_hex");
         self.b = u8::from_str_radix(&self.hex[4..6], 16).expect("already validated by valid_hex");
+    }
+
+    fn rgb_to_hex(&mut self) {
+        self.hex = format!("{:2x}{:2x}{:2x}", self.r, self.g, self.b);
     }
 }
 
@@ -69,10 +70,13 @@ impl eframe::App for ColorPickerApp {
                 ui.text_edit_singleline(&mut self.hex)
                     .labelled_by(hex_label.id);
                 if ui
-                    .add_enabled(self.valid_hex(), egui::Button::new("update with hex"))
+                    .add_enabled(self.valid_hex(), egui::Button::new("convert hex to rgb"))
                     .clicked()
                 {
-                    self.update_hex();
+                    self.hex_to_rgb();
+                }
+                if ui.button("convert rgb to hex").clicked() {
+                    self.rgb_to_hex();
                 }
             });
         });
