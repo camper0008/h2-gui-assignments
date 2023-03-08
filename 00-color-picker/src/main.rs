@@ -58,7 +58,7 @@ impl eframe::App for ColorPickerApp {
                 let texture_options = TextureOptions::default();
                 &ui.ctx().load_texture("color", color_image, texture_options)
             };
-            ui.image(texture, egui::vec2(100.0, 100.0));
+            ui.image(texture, egui::vec2(200.0, 100.0));
             ui.add_space(10.0);
             ui.add(egui::Slider::new(&mut self.r, 0..=255).text("red"));
             ui.add(egui::Slider::new(&mut self.g, 0..=255).text("green"));
