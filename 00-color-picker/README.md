@@ -1,11 +1,13 @@
 # color-picker
 
-Changes color dynamically.
+Changes color dynamically according to the rgb sliders.
 
-Made with egui.
+## Screenshot
 
 ![example screenshot](screenshot.png)
 
-Will only display "apply hex" button if hex is valid.
+## Input validation
+
+Will only enable "convert hex to rgb" button if input hex is valid.
 
 ![hex disabled example screenshot](disabled.png)
