@@ -1,6 +1,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")] // hide console window on Windows in release
 
-use egui::{vec2, Button, CentralPanel, Context, FontId, Grid, TextStyle, Ui};
+use egui::{vec2, CentralPanel, Context, FontId, Grid, TextStyle, Ui};
 
 fn main() -> Result<(), eframe::Error> {
     let options = eframe::NativeOptions {
@@ -103,7 +103,7 @@ impl eframe::App for CalculatorApp {
                     self.input = self.input[..self.input.len() - 1].to_owned();
                 }
                 if ui.button("±").clicked() {
-                    if self.input.starts_with("-") {
+                    if self.input.starts_with('-') {
                         self.input = self.input[1..].to_owned();
                     } else {
                         self.input = String::from("-") + &self.input[..];
@@ -132,10 +132,8 @@ impl eframe::App for CalculatorApp {
                     self.mode = Mode::Minus;
                 }
                 ui.end_row();
-                if ui.button("·").clicked() {
-                    if !self.input.contains(".") {
-                        self.input += ".";
-                    }
+                if ui.button("·").clicked() && !self.input.contains('.') {
+                    self.input += ".";
                 }
                 add_number_buttons(self, ui, &["0"]);
                 if ui.button("=").clicked() {
