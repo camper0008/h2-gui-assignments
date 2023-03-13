@@ -20,7 +20,6 @@ enum Mode {
     Minus,
     Mult,
     Div,
-    Mod,
 }
 
 struct CalculatorApp {
@@ -53,7 +52,6 @@ impl CalculatorApp {
             Mode::Minus => self.sum -= input,
             Mode::Mult => self.sum *= input,
             Mode::Div => self.sum /= input,
-            Mode::Mod => self.sum %= input,
         }
         self.input = String::new();
     }
@@ -89,7 +87,6 @@ impl eframe::App for CalculatorApp {
                     Mode::Div => "÷",
                     Mode::Mult => "×",
                     Mode::Minus => "−",
-                    Mode::Mod => "%",
                 });
                 ui.label(&self.input);
             });
@@ -110,8 +107,8 @@ impl eframe::App for CalculatorApp {
                     }
                 }
                 if ui.button("%").clicked() {
-                    self.evaluate();
-                    self.mode = Mode::Mod;
+                    let input: f64 = self.input.parse().expect("should be valid number");
+                    self.input = (input / 100.0).to_string();
                 }
                 ui.end_row();
                 add_number_buttons(self, ui, &["1", "2", "3"]);
